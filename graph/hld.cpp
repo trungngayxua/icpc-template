@@ -1,6 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 /*
 ===============================================================================
                           Heavy-Light Decomposition (HLD)
@@ -100,13 +97,6 @@ public:
     void processSubtree(int u, F callback) const {
         callback(pos[u], pos[u] + sz[u] - 1);
     }
-
-    // Getters (optional)
-    int getPos(int u)   const { return pos[u]; }
-    int getHead(int u)  const { return head[u]; }
-    int getParent(int u)const { return parent[u]; }
-    int getDepth(int u) const { return depth[u]; }
-    int getSize(int u)  const { return sz[u]; }
 };
 
 /*
@@ -130,13 +120,6 @@ public:
 
   build(root = 1)
       Chạy decomposition, flatten cây bắt đầu từ root.
-
-  processPath(u, v, callback)
-      Duyệt tất cả các đoạn [L, R] liên tiếp tương ứng với path(u, v).
-      Gọi callback(L, R) cho mỗi đoạn (để gắn Segment Tree, Li Chao Tree...).
-
-  processSubtree(u, callback)
-      Gọi callback(L, R) cho đoạn liên tiếp tương ứng với subtree(u).
 
 ===============================================================================
 🔹 ĐỘ PHỨC TẠP:

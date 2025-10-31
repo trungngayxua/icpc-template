@@ -19,11 +19,6 @@
 // - Tránh double-count: chỉ đếm cặp bắt chéo nhánh (không đếm trong-nhánh tại bước centroid, vì sẽ được xử lý ở đệ quy).
 // - Đệ quy sâu: cân nhắc tăng stack hoặc viết lại BFS stack nếu môi trường hạn chế.
 // - Bộ nhớ distToCent ~ O(N log N) (mỗi u có ≤ chiều cao centroid entries).
-//
-// API
-// - CentroidDecomposition cd(g): build parent[], level[], distToCent[u][lvl]
-// - CDPairCounter(g, K).run(): trả {số cặp dist<=K, số cặp dist==K}
-// - CDNearest(cd): add(u), query(v) khoảng cách gần nhất tới nút đã đánh dấu
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -138,20 +133,4 @@ struct CDPairCounter {
         for (int v : g[c]) if (!removed[v]) decompose(v);
     }
     pair<long long,long long> run() { decompose(0); return {atMost, equalK}; }
-};
-
-// Nearest marked (add-only)
-struct CDNearest {
-    const CentroidDecomposition& cd;
-    vector<int> best; static constexpr int INF = 1e9;
-    explicit CDNearest(const CentroidDecomposition& cd) : cd(cd), best(cd.n, INF) {}
-    void add(int u) {
-        int x = u;
-        while (x != -1) { int L = cd.level[x]; best[x] = min(best[x], cd.distToCent[u][L]); x = cd.parent[x]; }
-    }
-    int query(int u) const {
-        int res = INF, x = u;
-        while (x != -1) { int L = cd.level[x]; res = min(res, best[x] + cd.distToCent[u][L]); x = cd.parent[x]; }
-        return res;
-    }
 };
